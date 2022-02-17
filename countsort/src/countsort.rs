@@ -19,7 +19,6 @@ Report mean, std, min, and max sort time
 use std::time::{SystemTime, UNIX_EPOCH};
 use std::mem;
 
-
 // Round up to the nearest integer size.
 fn real_wordsize(ww: i8) -> i8 {
     if ww <= 8 {
