@@ -1,5 +1,4 @@
 use clap::Parser;
-
 pub mod lib;
 
 /// Parse arguments
@@ -13,7 +12,6 @@ struct Args {
     #[clap(short, long, default_value_t = 1)]
     t: u128,
 }
-
 
 fn main () {
     let args = Args::parse();
