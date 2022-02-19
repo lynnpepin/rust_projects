@@ -6,22 +6,35 @@ and k = the total size of the 'alphabet' of integers.
 
 Countsort works for any range, but we use [0, k) for simplicity.
 
-
-./countsort -n 10000 -w 6 -t 10:
-    Sort n randomly-generated integers,
-    in the range [0, 2^w),
-    and report how long it takes, on average, over t trials.
 */
 
 use std::time::SystemTime;
 use rand::{distributions::Uniform, Rng};
 use pyo3::prelude::*;
 
-// countsort has to print its counts somewhere
-// but i don't want to actually do that anywhere
-// so a noop, per https://stackoverflow.com/questions/42891039/
-#[no_mangle]
-fn noop() -> () {()}
+pub fn countsort(vals: Vec<u32>, w: u8) -> Vec<u32> {
+    // 1. Count all the values
+    //     e.g. counts[11] = 31 means '11' showed up 31 times in the values.
+    let mut counts = vec![0; 2 << w];
+    let mut sorted: Vec<u32> = vec![0; vals.len()];
+
+    for val in vals.into_iter() {
+        counts[val as usize] += 1;
+    }
+
+    // 2. Sort into 'sorted'
+    let mut idx = 0;
+    for (ci, cc) in counts.into_iter().enumerate() {
+        // ci = the key, cc = the number of times (counts) it appears
+        // e.g. for ci, cc = 4, 3, it means 4 appears 3 times in the unsorted list.
+        for _ in 0..cc {
+            sorted[idx] = ci as u32;
+            idx += 1;
+        }
+    }
+
+    sorted
+}
 
 // Sort n integers in range [0, 2^w), and report how long it took.
 pub fn countsort_timing(n: u32, w: u8) -> i64 {
@@ -29,28 +42,13 @@ pub fn countsort_timing(n: u32, w: u8) -> i64 {
     // https://stackoverflow.com/questions/48218459/
     let mut rng = rand::thread_rng();
     let range = Uniform::new(0, 2 << w);
-    let vals: Vec<u32> = (0..n).map(|_| rng.sample(&range)).collect();
-
-    // Count each value in vector 'counts'
-    // e.g. counts[11] = 31 means '11' showed up 31 times in the values.
-    let mut counts = vec![0; 2 << w];
+    let random_vals: Vec<u32> = (0..n).map(|_| rng.sample(&range)).collect();
 
     // Start timer  https://stackoverflow.com/questions/13322479/
     let now = SystemTime::now();
     // Sort!
-    for val in vals.into_iter() {
-        counts[val as usize] += 1;
-    }
-    // todo: Push the values out somewhere
-    // i don't actually want to print these out!
-    // but i need something that won't be compiled away either.
-    for count in counts.into_iter() {
-        for _ in 0..count {
-            // nested for loop, but this inner loop sums to a total of n
-            // so, no quadratic runtime here
-            noop();
-        }
-    }
+    let sorted = countsort(random_vals, w);
+    // todo: put call in here
     let total_ns = now.elapsed().unwrap().as_nanos();
     //println!("... ... Sorted in {:?} ns", total_ns);
     total_ns as i64
@@ -79,9 +77,15 @@ pub fn countsort_trials_python(n: u32, w: u8, t: u128) -> PyResult<f64> {
     Ok(countsort_trials(n, w, t))
 }
 
+#[pyfunction]
+pub fn countsort_python(vals: Vec<u32>, w: u8) -> PyResult<Vec<u32>> {
+    Ok(countsort(vals, w))
+}
+
 #[pymodule]
 pub fn countsortmodule(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(countsort_timing_python, m)?)?;
-    m.add_function(wrap_pyfunction!(countsort_trials_python, m)?)?;
+    m.add_function(wrap_pyfunction!(countsort_trials_python, m)?)?; 
+    m.add_function(wrap_pyfunction!(countsort_python, m)?)?; 
     Ok(())
 }

@@ -1,6 +1,12 @@
 use clap::Parser;
 pub mod lib;
+/*
+./countsort -n 10000 -w 6 -t 10:
+    Sort n randomly-generated integers,
+    in the range [0, 2^w),
+    and report how long it takes, on average, over t trials.
 
+*/
 /// Parse arguments
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
