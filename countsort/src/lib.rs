@@ -74,8 +74,14 @@ pub fn countsort_timing_python(n: u32, w: u8) -> PyResult<i64> {
     Ok(countsort_timing(n, w))
 }
 
+#[pyfunction]
+pub fn countsort_trials_python(n: u32, w: u8, t: u128) -> PyResult<f64> {
+    Ok(countsort_trials(n, w, t))
+}
+
 #[pymodule]
 pub fn countsortmodule(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(countsort_timing_python, m)?)?;
+    m.add_function(wrap_pyfunction!(countsort_trials_python, m)?)?;
     Ok(())
 }
