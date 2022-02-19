@@ -19,6 +19,18 @@ use pyo3::prelude::*;
 /// 
 /// * `vals` : Vector containing unsigned integers
 /// * `w` : Imaginary word-size in bits. (Warning: Memory intensive for large w.)
+/// 
+/// # Examples
+/// 
+/// ```
+/// let vals: Vec<u32>  = [2, 0, 4, 5, 7, 7, 0, 6, 1, 7, 6];
+/// let w: u8 = 3;
+/// let sorted_vals = countsort(vals, w);
+/// let test_vals: Vec<u32> = [0, 0, 1, 2, 4, 5, 6, 6, 7, 7, 7];
+/// assert_eq!(vals, test_vals);
+/// ```
+/// 
+/// (I don't know if this test actually works-- I couldn't get rustdoc test to work yet!)
 pub fn countsort(vals: Vec<u32>, w: u8) -> Vec<u32> {
 
     // 1. Count the instance of each value.
