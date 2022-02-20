@@ -23,15 +23,16 @@ use pyo3::prelude::*;
 /// # Examples
 /// 
 /// ```
-/// let vals: Vec<u32>  = [2, 0, 4, 5, 7, 7, 0, 6, 1, 7, 6];
+/// let vals: Vec<u32>  = vec![2, 0, 4, 5, 7, 7, 0, 6, 1, 7, 6];
 /// let w: u8 = 3;
-/// let sorted_vals = countsort(vals, w);
-/// let test_vals: Vec<u32> = [0, 0, 1, 2, 4, 5, 6, 6, 7, 7, 7];
+/// let sorted_vals = count_and_sort(vals, w);
+/// let test_vals: Vec<u32> = vec![0, 0, 1, 2, 4, 5, 6, 6, 7, 7, 7];
 /// assert_eq!(vals, test_vals);
 /// ```
 /// 
 /// (I don't know if this test actually works-- I couldn't get rustdoc test to work yet!)
-pub fn countsort(vals: Vec<u32>, w: u8) -> Vec<u32> {
+
+pub fn count_and_sort(vals: Vec<u32>, w: u8) -> Vec<u32> {
 
     // 1. Count the instance of each value.
     let mut counts = vec![0; 2 << w];
@@ -75,7 +76,7 @@ pub fn countsort_timing(n: u32, w: u8) -> i64 {
     // Start timer  https://stackoverflow.com/questions/13322479/
     let now = SystemTime::now();
     // Sort!
-    let sorted = countsort(random_vals, w);
+    let _sorted = count_and_sort(random_vals, w);
     // todo: put call in here
     let total_ns = now.elapsed().unwrap().as_nanos();
     //println!("... ... Sorted in {:?} ns", total_ns);
@@ -117,11 +118,11 @@ pub fn countsort_trials_python(n: u32, w: u8, t: u128) -> PyResult<f64> {
 
 #[pyfunction]
 pub fn countsort_python(vals: Vec<u32>, w: u8) -> PyResult<Vec<u32>> {
-    Ok(countsort(vals, w))
+    Ok(count_and_sort(vals, w))
 }
 
 #[pymodule]
-pub fn countsortmodule(_py: Python, m: &PyModule) -> PyResult<()> {
+pub fn countsort(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(countsort_timing_python, m)?)?;
     m.add_function(wrap_pyfunction!(countsort_trials_python, m)?)?; 
     m.add_function(wrap_pyfunction!(countsort_python, m)?)?; 
