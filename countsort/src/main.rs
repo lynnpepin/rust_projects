@@ -1,5 +1,8 @@
 use clap::Parser;
-pub mod lib;
+
+//mod lib;
+//use crate::lib::countsort_trials;
+use countsort::countsort_trials;
 
 /*
 ./countsort -n 10000 -w 6 -t 10:
@@ -28,7 +31,7 @@ fn main () {
         args.n, args.w, args.t
     );
 
-    let average = lib::countsort_trials(args.n, args.w, args.t);
+    let average = countsort_trials(args.n, args.w, args.t);
     println!("{:.0} ns avg", average);
 
 }
