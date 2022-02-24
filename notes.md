@@ -17,7 +17,7 @@ Rust also provides their documentation offline, e.g. `rustup --docs book`:
 | ----  | ----------------------- |
 | `book`  | *The* Rust Book.
 | `std`   | Standard Library. Builds on the Core.
-| `rust-by-example` |
+| `rust-by-example` | Rust by Example!
 | `cargo` | Using Cargo
 
 Rust also has some more advanced docs, such as the `reference`, the `core` docs, the `nomicon` for dark forebidden rust, or `embedded-book` for embedded programming. Get the full list with `rustup docs -h`.
@@ -26,9 +26,9 @@ Rust also has some more advanced docs, such as the `reference`, the `core` docs,
 
 ---
 
-## First things first: Install and Cargo
+## First things first: Install Cargo and use it.
 
-> **TLDR: Use `cargo` from the start.**
+> **TLDR: Use `cargo` from the start: For your Hello World, then for your first project, then for managing dependencies.**
 
 [Install Rustup](https://www.rust-lang.org/learn/get-started). It'll also give you **Cargo**, the build-tool and package manager. It is the Conda for your Rust.
 
@@ -60,6 +60,8 @@ If you **just want a tool like `gcc` for Rust, use `rustc`**. Once you need to `
 
 ### Do things right first.
 
+> **TLDR:** [Structure your projects like this](https://doc.rust-lang.org/cargo/guide/project-layout.html), and [parse args with `clap` like this](](https://github.com/clap-rs/clap/tree/master/examples)), and you probably want to use `vec!` and `HashMap` for your datastructures. We'll go over how to use these later.
+
 Rust starts you with nice things that usually come later: Tests, docs, managing dependencies, and readiness to publish.
 
 Let's keep you on the right foot. You probably want to structure your projects right.
@@ -83,3 +85,5 @@ These are chapters 3, 4, 5, 6, 8, 9, 10, 18, and the Appendix.
 Chapters 2, 7, 11, 12, 14, 20 deal with hands-on examples and project management.
 
 Chapters 13, 15, 16, 17, 18, 19 deal with advanced language features.
+
+TODO. Add links, continue.
